@@ -1,0 +1,75 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./public/style/style.css">
+    <script defer src="./script/app.js"></script>
+    <title>Mothership</title>
+</head>
+<body>
+    <header class="header">
+
+        <button class="button">
+            <a href="#" class="icono"><img src = "./public/images/menu.svg" id="menu" alt="menu"/></a>
+        </button>
+    
+        <a href="#"><img src="./public/images/logo1.png" id="logo" alt="Logotipo de Mothership"></a>
+    
+        <button class="button">
+            <a href="#" class="icono"><img src = "./public/images/log-out.svg" id="iniciarSesion" alt="iniciarSesion"/></a>
+        </button>
+    
+        <nav class="nav">
+            <ul class="ul">
+                <li class="li"><a href="#" class="a">Inicio</a></li>
+                <li class="li"><a href="#" class="a">Contacto</a></li>
+                <li class="li"><a href="#" class="sesion">Iniciar sesion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="barraProgreso">
+        <p><img class="imagenBarra" src="./public/images/barra.progreso.png"></p> 
+    </div>
+
+    <div class="contenido">
+    <h1>De texto a imagen</h1>
+    <h4>Imagina y crea, describe lo que quieres ver en la imagen, aquí describes la imagen que quieres para tu proyecto.</h4>
+    <img src="./public/images/imagen.png" id="imagen" alt="Imagen Modelo">
+    </div>
+
+    <div class="texto">
+    <input type="text" class="box" name="queQuieresVer" id="queQuieresVer" placeholder="¿Qué quieres ver?" maxlength="259" required>
+    <p class="comentario burbuja">Aquí describes la imagen que quieres para tu proyecto</p>
+    </div>
+
+    <div class="opciones">
+        
+        <form>
+            <select id="opciones" name="opciones" required>
+            <option id="estilo">Estilo</option>
+            <option value="comic">Comic</option>
+            <option value="fotografia">Fotografia</option>
+            <option value="pintura">Pitura</option>
+            </select>
+        </form>
+
+        <button class="boton"  type="submit">Crear imagen</button>
+
+    </div>
+    
+    <div class="navbarinf">
+        <p class="footer">&copy;2023 Mothership</p>
+        <a href="#" class="iconos"><img src="./public/images/instagram.svg" id="instagram"  alt="instagram"></a>
+        <a href="#" class="iconos"><img src = "./public/images/email.svg" id="email" alt="email"/></a>
+        <a href="#" class="iconos"><img src = "./public/images/linkedin.svg" id="linkedin" alt="linkedin"/></a> 
+        <a href="#" class="iconos"><img src = "./public/images/youtube.svg" id="youtube" alt="youtube"/></a>
+    </div>
+</body>
+<script> src="./script/app.js"</script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>    
+
+</html>

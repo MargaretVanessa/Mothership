@@ -180,7 +180,7 @@
     line-height: normal;
     margin-left: 50PX;
     margin-top: 27px;
-    width: 70%;
+    width: 40%;
   }
 
 /*imagen*/
@@ -376,7 +376,7 @@
       position:static;
       width: 335px;
       height: 333px;
-      margin: -78px 0px 0px 0px;
+      margin: -78px 0px 0px 12px;
     }
 
     .contenido{

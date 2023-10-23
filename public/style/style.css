@@ -248,11 +248,15 @@
   }
 
   /*Lista de Estilo*/
+
+  #miFormulario{
+    min-height: 54vh;
+  }
+
   .opciones{
     display: flex;
     position: relative;
     top: -32px;
-    min-height: 34vh;
   }
 
   #opciones{
@@ -288,7 +292,6 @@
   .navbarinf{
     width: 100%;
     border-top: 1px solid #09244B;
-    background-color: red;
   }
 
   .footer {
@@ -429,5 +432,9 @@
     float: right;
     padding: 1px;
     margin-right: 10px;
+  }
+
+  .navbarinf {
+    padding: 7px;
   }
 }

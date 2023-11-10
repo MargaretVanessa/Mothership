@@ -31,43 +31,36 @@
     </header>
 
     <div class="barraProgreso">
-        <p><img class="imagenBarra" src="./public/images/barra.progreso.png"></p> 
+        <p><img class="imagenBarra" src="./public/images/barraprogreso.png"></p> 
     </div>
+
+    <h1 class="titulo">Visualiza tu historia</h1>
 
     <div class="contenido">
-    <h1>De texto a imagen</h1>
-    <h4>Imagina y crea, describe lo que quieres ver en la imagen, aquí describes la imagen que quieres para tu proyecto.</h4>
-    <img src="./public/images/imagen.png" id="imagen" alt="Imagen Modelo">
+        <div class="texto">
+        <textarea id="texto" name="texto" placeholder="Escribe aquí..." maxlength="1000"></textarea>
+        </div>
+        <div class="imagen">
+            <img src="./public/images/img1.png" id="imagen" alt="Imagen Modelo">
+        </div>
     </div>
 
-    <form  id="miFormulario">
-    <div class="texto">
-    <input type="text" class="box" name="queQuieresVer" id="queQuieresVer" placeholder="¿Qué quieres ver?" maxlength="259" required>
-    <p class="comentario burbuja">Aquí describes la imagen que quieres para tu proyecto</p>
+    <h4 class="voz">Cuenta tu historia con tu voz</h4>
+
+    <div class="botones">
+
+        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo1"/>Parrafo 1</a>
+        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo2"/>Parrafo 2</a> 
+        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo3"/>Parrafo 3</a>
+        <button class="continuar" id="continuar" type="submit">Continuar</button>
     </div>
 
-    <div class="opciones">
-    <select id="opciones" name="opciones" required>
-        <option id="estilo">Estilo</option>
-        <option value="comic">Comic</option>
-        <option value="fotografia">Fotografia</option>
-        <option value="pintura">Pitura</option>
-    </select>
-    
-    <button class="boton" id="crearImagenBtn" type="submit">Crear imagen</button>
-    </div>
-    
-    </form>
-    
-    <div class="navbarinf">
+    <div class="navbarfooter">
         <p class="footer">&copy;2023 Mothership</p>
-        <a href="#" class="iconos"><img src="./public/images/instagram.svg" id="instagram"  alt="instagram"></a>
-        <a href="#" class="iconos"><img src = "./public/images/email.svg" id="email" alt="email"/></a>
-        <a href="#" class="iconos"><img src = "./public/images/linkedin.svg" id="linkedin" alt="linkedin"/></a> 
-        <a href="#" class="iconos"><img src = "./public/images/youtube.svg" id="youtube" alt="youtube"/></a>
     </div>
+
 </body>
-<script> src="./script/app.js"</script>
-<script src="https://unpkg.com/feather-icons"></script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>    
+    <script src="./script/app.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>    
 </html>

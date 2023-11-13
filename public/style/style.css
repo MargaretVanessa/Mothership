@@ -146,8 +146,11 @@
 
   /*Barra de progreso*/
   .barraProgreso{
-    background-color:  #FAF9F9;;
-    padding: 0.5em;
+    background-color:  #FAF9F9;
+  }
+
+  .menu{
+    background-color: #FAF9F9;
   }
 
   .titulo{
@@ -158,7 +161,6 @@
   line-height: 38px;
   letter-spacing: 0em;
   text-align: center;
-  margin-top: 5px;
   margin-bottom: 5px;
   }
 
@@ -193,14 +195,14 @@
     height: 100%;
   }
 
-   /* Puedes personalizar el estilo según tus necesidades */
   textarea {
-    width: 400px;
-    height: 420px;
-    resize: vertical; /* Esto permite redimensionar solo verticalmente */
-    padding: 5px; /* Agregar algún espacio interno para que se vea más parecido a un input */
+    width: 399px;
+    height: 423px;
+    resize: vertical; 
+    padding: 5px; 
     border-radius: 4px;
     background: #FFF;
+    font-size: 20px;
   }
 
   .voz{
@@ -211,47 +213,43 @@
     font-style: normal;
     font-weight: bold;
     line-height: normal;
-    margin-left: 190px;
+    margin-left: 290px;
     margin-top: 5px;
     margin-bottom: 5px;
   }
-  
-  .botones{
+
+  .acciones {
     display: flex;
-    padding: 10px;
-    margin-left: 100px;
+    justify-content: space-between; 
+    align-items: center; 
+    margin-left: 202px;
+    margin-right: 205px;
+    padding: 0.5em
   }
   
-  .botonaudio{
-    display: inline-flex;
-    padding: 2px 24px;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
+  .botones {
+    display: flex;
+  }
+  
+  .botonaudio {
+    display: flex;
+    align-items: center; 
+    padding: 6px;
+    margin: 0 55px 0 0;
     border-radius: 4px;
     border: 2px solid #09244B;
     background: #FFFFF3;
-    cursor: pointer;
-    margin: 7px;
-    color: #00020A;
-    font-size: 14px;
-    font-weight: bold;
   }
-
-  .continuar{
-    display: inline-flex;
-    width: 146px;
-    height: 36px;
-    padding: 6px 24px;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
+  
+  #continuar {
+    padding: 2px 24px;
     border-radius: 4px;
     background: #5D00B9;
     color: white;
-    margin-left: 555px;
     font-size: 14px;
     font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
   }
 
   img#parrafo {
@@ -279,7 +277,6 @@
     /*Media Querys*/  
     
     @media screen and (max-width: 768px) {
-      /* Tu código para dispositivos móviles aquí */
     
     .header .button{
       display: block;
@@ -318,18 +315,22 @@
     }
 
     .barraProgreso {
-      padding: 0.5em;
-      width: 100%;
-      box-sizing: border-box;
-   }
+      padding: 1em; 
+    }
+  
+    .imagenBarra {
+      height: 30px;
+    }
 
     .titulo {
-        font-size: 24px; 
-        text-align: center; 
+      font-size: 24px; 
+      text-align: center; 
     }
     
     .contenido {
-      flex-wrap: wrap;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
       margin-left: 0px;
       margin-right: 0px;
     }
@@ -344,46 +345,59 @@
       font-size: 19px;
     }
 
-    .continuar {
-      margin-left: 0;
-      margin-top: 10px;
-    }
-
-    .botones {
+    .acciones {
+      display: flex;
       flex-direction: column;
-      align-items: center; 
-      margin-left: 0; 
+      margin-left: 5px;
+      margin-right: 5px;
+      align-items: center;
+      font-weight: bold;
     }
-
-    .botonaudio, .continuar {
-        width: 100%; 
-        margin-bottom: 10px; 
+  
+    .botones {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center; 
     }
-
-    .continuar {
-      width: 100%; 
-      margin-left: 0; 
+  
+    .botonaudio {
+      margin: 10px;
+      padding: 2px;
+    }
+  
+    #continuar {
+      padding: 6px 24px;
+      border-radius: 4px;
+      background: #5D00B9;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
       margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     img#parrafo{
-      width: 9px;
+      height: 100%;
+      width: 24%;
     }
 
     textarea#texto {
+     
       width: 350px;
       height: 212px; 
       max-height: 100%; 
       margin-bottom: 10px;
-  }
+    }
 
     .imagen {
-        margin-right: 0; 
+      margin-right: 0; 
     }
 
     img#imagen {
-        max-width: 100%; 
-        height: auto; 
+      max-width: 100%; 
+      height: auto; 
     }
 
     .footer {
@@ -392,7 +406,7 @@
     }
 
     .navbarfooter {
-    padding: 7px;
-    width: 100%;
+      padding: 7px;
+      width: 100%;
     }
 }

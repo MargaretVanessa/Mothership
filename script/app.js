@@ -49,64 +49,72 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+//grabar audio//
+document.addEventListener('DOMContentLoaded', (event) => {
+    const botonesAudio = document.querySelectorAll('.botonaudio');
+    let mediaRecorder;
+    let audioChunks = [];
+    let audioElement = new Audio();
 
-// Función query
-async function query(data) {
-    const response = await fetch(
-        "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
-        {
-            headers: { Authorization: "Bearer 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" },
-            method: "POST",
-            body: JSON.stringify(data),
+    // Función para iniciar la grabación
+    function startRecording() {
+        audioChunks = [];
+        const mediaConstraints = { audio: true };
+
+        navigator.mediaDevices.getUserMedia(mediaConstraints)
+            .then(function (stream) {
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = function (event) {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = function () {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+
+                    // Establecer la fuente del elemento de audio
+                    audioElement.src = audioUrl;
+
+                    console.log('Grabación completada:', audioUrl);
+
+                    // Aquí puedes hacer lo que quieras con el audioBlob o audioUrl
+                };
+
+                mediaRecorder.start();
+            })
+            .catch(function (error) {
+                console.log('Error al obtener permisos de audio:', error);
+            });
+    }
+
+    // Función para detener la grabación
+    function stopRecording() {
+        if (mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
         }
-        );
-        const result = await response.blob();
-        return result;
-    }
-    
-// Evento click para el botón "Crear imagen"
-const crearImagenBtn = document.getElementById('crearImagenBtn');
-crearImagenBtn.addEventListener('click', async () => {
-    const queQuieresVer = document.getElementById('queQuieresVer').value;
-    const opciones = document.getElementById('opciones').value;
-
-    if (!queQuieresVer) {
-        alert('Debes ingresar una descripción');
-        return;
     }
 
-    if (opciones === 'Estilo') {
-        alert('Selecciona una opción válida');
-        return;
-    }
-
-    const imagenData = {
-        "inputs": `Descripción: ${queQuieresVer}, Opción: ${opciones}`
-    };
-
-    try {
-        const response = await query(imagenData);
-
-        // Comprueba si la respuesta es una imagen
-        if (response instanceof Blob) {
-            const imageUrl = URL.createObjectURL(response);
-
-            // Crea o actualiza un elemento <img> en el DOM
-            const imagenElement = document.getElementById('imagen');
-            if (imagenElement) {
-                imagenElement.src = imageUrl;
-                imagenElement.alt = 'Imagen generada';
+    // Maneja el evento de clic en los botones de audio
+    botonesAudio.forEach((boton) => {
+        boton.addEventListener('click', () => {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                // Detener la grabación si ya está en curso
+                stopRecording();
             } else {
-                const nuevaImagen = document.createElement('img');
-                nuevaImagen.id = 'imagen';
-                nuevaImagen.src = imageUrl;
-                nuevaImagen.alt = 'Imagen generada';
-                document.querySelector('.contenido').appendChild(nuevaImagen);
+                // Iniciar la grabación si no está en curso
+                startRecording();
             }
-        } else {
-            console.error('La respuesta no es una imagen válida.');
+        });
+    });
+
+    // Reproducir el audio grabado
+    document.getElementById('reproducirAudio').addEventListener('click', () => {
+        if (audioElement.src) {
+            audioElement.play();
         }
-    } catch (error) {
-        console.error('Error al obtener la imagen:', error);
-    }
+    });
 });
+

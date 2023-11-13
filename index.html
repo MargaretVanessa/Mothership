@@ -33,26 +33,31 @@
     <div class="barraProgreso">
         <p><img class="imagenBarra" src="./public/images/barraprogreso.png"></p> 
     </div>
+    <div class="menu">
+        <h1 class="titulo">Visualiza tu historia</h1>
 
-    <h1 class="titulo">Visualiza tu historia</h1>
-
-    <div class="contenido">
-        <div class="texto">
-        <textarea id="texto" name="texto" placeholder="Escribe aquí..." maxlength="1000"></textarea>
+        <div class="contenido">
+            <div class="texto">
+                <textarea id="texto" name="texto" placeholder="Escribe aquí..." maxlength="1000"></textarea>
+            </div>
+            <div class="imagen">
+                <img src="./public/images/img1.png" id="imagen" alt="Imagen Modelo">
+            </div>
         </div>
-        <div class="imagen">
-            <img src="./public/images/img1.png" id="imagen" alt="Imagen Modelo">
-        </div>
-    </div>
 
-    <h4 class="voz">Cuenta tu historia con tu voz</h4>
+        <h4 class="voz">Cuenta tu historia con tu voz</h4>
 
-    <div class="botones">
-
-        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo1"/>Parrafo 1</a>
-        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo2"/>Parrafo 2</a> 
-        <a href="#" class="botonaudio"><img src = "./public/images/mic.svg" id= "parrafo" alt="parrafo3"/>Parrafo 3</a>
-        <button class="continuar" id="continuar" type="submit">Continuar</button>
+        <div class="acciones">
+            <div class="botones">
+              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo1"/>Parrafo 1</a>
+              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo2"/>Parrafo 2</a> 
+              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo3"/>Parrafo 3</a>
+            </div>
+            <button id="continuar" type="submit">Continuar</button>
+          </div>
+        
+        
+        <!--button id="reproducirAudio">Reproducir Audio</button-->
     </div>
 
     <div class="navbarfooter">

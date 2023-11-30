@@ -5,7 +5,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./public/style/style.css">
-    <script src="./script/app.js"></script>
+   
     <title>Mothership</title>
 </head>
 <body>
@@ -15,7 +15,7 @@
             <a href="#" class="icono"><img src = "./public/images/menu.svg" id="menu" alt="menu"/></a>
         </button>
     
-        <a href="#"><img src="./public/images/logo1.png" id="logo" alt="Logotipo de Mothership"></a>
+        <a href="#"><img src="./public/images/logo.png" id="logo" alt="Logotipo de Mothership"></a>
     
         <button class="button">
             <a href="#" class="icono"><img src = "./public/images/log-out.svg" id="iniciarSesion" alt="iniciarSesion"/></a>
@@ -24,8 +24,8 @@
         <nav class="nav">
             <ul class="ul">
                 <li class="li"><a href="#" class="a">Inicio</a></li>
-                <li class="li"><a href="#" class="a">Contacto</a></li>
-                <li class="li"><a href="#" class="sesion">Iniciar sesion</a></li>
+                <!--li class="li"><a href="#" class="a">Contacto</a></li-->
+                <li class="li"><a href="#" class="sesion">Cerrar sesion</a></li>
             </ul>
         </nav>
     </header>
@@ -40,25 +40,91 @@
         <div class="contenido">
             <div class="texto">
                 <label class="storytellin"> Storytelling (Historia) </label>
-                <textarea id="texto" name="texto" placeholder="Escribe aquí..." maxlength="1000"></textarea>
+                <textarea type="text" id="texto" name="texto" placeholder="Escribe aquí..." maxlength="1000"></textarea>
             </div>
-            <div class="imagen">
-                <img src="./public/images/img1.png" id="imagen" alt="Imagen Modelo">
+
+            <div class="imagenApi">
+                <label for="generate-btn" id="titulo-imagen" class="generarImg">Estamos listos para que puedas ver tu historia</label>
+                <button class="boton" id="generate-btn" onclick="generarImagenes()">Generar imágenes</button>
+            
+                <div id="resultado" class="resultado-imagenes">
+                  
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <button>1</button>
+                    <button>2</button>
+                    <button>3</button>
+                </div>
+            
+                <div id="popup" style="display: none;">
+                    <p class="generandoImg">Generando imágenes...</p>
+                    <div id="progress-bar">
+                        <div id="progress"></div>
+                    </div>
+                </div>
+                
             </div>
+
         </div>
 
         <h4 class="voz">Cuenta tu historia con tu voz</h4>
 
         <div class="acciones">
             <div class="botones">
-              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo1"/>Parrafo 1</a>
-              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo2"/>Parrafo 2</a> 
-              <a href="#" class="botonaudio"><img src="./public/images/mic.svg" id="parrafo" alt="parrafo3"/>Parrafo 3</a>
+                <a href="#" class="botonaudio botonaudio1" onclick="abrirModal()"><img src="./public/images/mic.svg" id="botonAudio1" alt="grabaHistoria"/>Grabar historia</a>
             </div>
             <button id="continuar" type="submit">Continuar</button>
-          </div>
+        </div>
+
+        <div id="miModal">
+            <div id="contenidoModal">
+               
+                <div class="menuGrabar">
+                    <button class="cerrar" onclick="cerrarModal()">
+                        <a href="#" class="icono" id="icono"><img src="./public/images/x.svg" /></a>
+                    </button>
+                
+                    <div class="titulo">
+                        <h5>Graba tu historia</h5>
+                    </div>
+                
+                    <div class="reproductor"> 
+                        <button id="playRecord" onclick="playAudio()" disabled><img class="playRecord" src="./public/images/play circle_.svg" alt=""></button>
+                        <audio id="audioPlayer" controls>iniciarGrabacion
+                            <source type="audio/mp3">
+                            Tu navegador no soporta la etiqueta de audio.
+                        </audio>                       
+                         <button id="startRecord" onclick="startRecording()"><img class="startRecording" src="./public/images/icon.svg" alt="iniciarGrabacion"></button>
+                         <button id="pauseRecord" onclick="pauseRecording()" disabled><img class="pauseRecording" src="./public/images/pause_.svg" alt="iniciarGrabacion"></button>
+                         <button id="stopRecord" onclick="stopRecording()" disabled><img class="stopRecording" src="./public/images/stop-circle.svg" alt="iniciarGrabacion"></button>
+                        
+                    </div>
+                
+                    <div class="botones">
+                        <button id="guardarAudio" onclick="guardarAudio()">Guardar audio</button>
+                        <div id="popupVoz" class="popupVoz">
+                            <button class="cerrar" onclick="cerrarPopupVoz()">
+                                <a href="#" class="icono" id="icono"><img src="./public/images/x.svg" /></a>
+                            </button>
+                            <div class="titulo">
+                                <h5>¡Voz agregada con éxito!</h5>
+                            </div>
+                            <div class="ok">
+                                <a href="#" class="icono" id="icono"><img src="./public/images/check-circle.svg" /></a>
+                            </div>
+                            
+                            <audio id="audioPlayerPopup" controls>
+                                Tu navegador no soporta la etiqueta de audio.
+                            </audio>
+                        </div>
+                        <button id="volverGrabar" onclick="volverAGrabar()">Volver a grabar</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
         
-        <!--button id="reproducirAudio">Reproducir Audio</button-->
     </div>
 
     <div class="navbarfooter">
@@ -66,7 +132,9 @@
     </div>
 
 </body>
-    <script src="./script/app.js"></script>
+<script src="./script/app.js"></script>
+    <script src="./script/abrirPopup.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
 </html>

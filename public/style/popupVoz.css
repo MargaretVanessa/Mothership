@@ -4,39 +4,3 @@
     padding: 0;
 }
 
-.menuVoz{
-    width: 369px;
-    height: 143px;
-    border-radius: 20px;
-    background: var(--Fondo-pginas, #F2F2F2);
-    box-shadow: 0px 4px 4px 0px rgba(204, 0, 255, 0.25);
-}
-
-.cerrar{
-    float: right;
-    border: aliceblue;
-}
-
-h5{
-    color: var(--Logo-2, #09244B);
-    text-align: center;
-    font-family: Lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: bold;
-    line-height: normal;
-    padding: 27px;
-}
-
-.ok {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-a#icono {
-    width: 50px;
-    height: 50px;
-    flex-shrink: 0;
-    color: #10C200;
-}

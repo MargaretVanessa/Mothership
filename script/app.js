@@ -1,120 +1,312 @@
+  document.addEventListener('DOMContentLoaded', function() {
+    cerrarModal();
+    
+  });
+ 
+  var generatedImagesContainer = document.getElementById('resultado')
+  generatedImagesContainer.style.display = "none"
+
+  var generatedPaginator = document.getElementById('pagination')
+  generatedPaginator.style.display = "none"
+
+  var generatedpopup = document.getElementById("popupVoz")
+  generatedpopup.style.display = "none"
+
+ // Función para abrir el modal
+ function abrirModal() {
+    console.log('Abriendo modal');
+    var modal = document.getElementById('miModal');
+    if (modal !== null) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  // Función para cerrar el modal
+  function cerrarModal() {
+    console.log('Cerrando modal');
+    var modal = document.getElementById('miModal');
+    if (modal !== null) {
+      modal.style.display = 'none';
+    }
+  }
+
+
 /* Cuando hago CLICK .button, .nav TOGGLE 'activo' */
 const button = document.querySelector('.button')
 const nav    = document.querySelector('.nav')
+
 
 button.addEventListener('click',()=>{
     nav.classList.toggle('activo')
 })
 
-document.addEventListener('DOMContentLoaded', function() {
-    const formulario = document.getElementById('miFormulario');
+/*IMAGEN API*/
 
-    formulario.addEventListener('submit', function(event) {
-        event.preventDefault();
+var imageUrls = [];
+        var currentPageIndex = 0;
+        var imagesPerPage = 1; // Cambiado a 1 para mostrar solo una imagen por página
 
-        // Obtiene los valores del formulario
-        const queQuieresVer = document.getElementById('queQuieresVer').value;
-        const opciones = document.getElementById('opciones').value;
-
-        // Realiza validaciones, por ejemplo, si el campo de texto está vacío
-        if (!queQuieresVer) {
-            alert('Debes ingresar una Descripción');
-            return;
+        function mostrarPagina() {
+            var start = currentPageIndex * imagesPerPage;
+            var end = start + imagesPerPage;
+            var paginatedUrls = imageUrls.slice(start, end);
+            mostrarResultados(paginatedUrls);
         }
 
-        // Validación adicional para queQuieresVer
-        const caracteresPermitidos = /^[a-zA-Z0-9,.;\-"\s]+$/; // Caracteres permitidos
+        function generarPaginacion() {
+        var totalPages = Math.ceil(imageUrls.length / imagesPerPage);
+        var paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = '';
 
-        if (!caracteresPermitidos.test(queQuieresVer)) {
-            alert('La descripción contiene caracteres no permitidos');
-            return;
+            if (totalPages > 1) {
+                for (var i = 0; i < totalPages; i++) {
+                    var button = document.createElement('button');
+                    button.textContent = i + 1;
+                    button.addEventListener('click', function () {
+                        currentPageIndex = parseInt(this.textContent) - 1;
+                        mostrarPagina();
+                    });
+                    paginationDiv.appendChild(button);
+                }
+            }
         }
 
-        // Validación adicional para opciones
-        if (opciones === 'Estilo' || opciones.trim() === '') {
-            alert('Selecciona un Estilo válido');
-            return;
+        function mostrarResultados(urls) {
+            var resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = '';
+
+            urls.forEach(function(url, index) {
+                var imagen = document.createElement('img');
+                imagen.src = url;
+                imagen.alt = 'Imagen ' + (index + 1);
+                resultadoDiv.appendChild(imagen);
+            });
+
+            // Mostrar paginación después de mostrar la primera imagen
+            generarPaginacion();
         }
 
-        // Crea un objeto JSON con los datos
-        const imagenData = {
-            descripcion: queQuieresVer,
-            estilo: opciones
-        };
+        function generarImagenes() {
+            generatedImagesContainer.style.display = "block"
+            generatedPaginator.style.display = "block"
 
-        // Puedes realizar otras operaciones aquí, como enviar este objeto a una API
-        // o simplemente guardarlos en una variable para futuros usos.
+             // Mostrar el popup
+             var popup = document.getElementById('popup');
+             popup.style.display = 'block';
 
-        console.log(imagenData); // Muestra el objeto JSON en la consola
-    });
-});
+            const botongenerarimagenes = document.getElementById("generate-btn")
+            botongenerarimagenes.style.display = "none"
+            const tituloTexto = document.getElementById("titulo-imagen")
+            tituloTexto.style.display = "none"
+            var texto = document.getElementById('texto').value;
+           
 
-//grabar audio//
-document.addEventListener('DOMContentLoaded', (event) => {
-    const botonesAudio = document.querySelectorAll('.botonaudio');
-    let mediaRecorder;
-    let audioChunks = [];
-    let audioElement = new Audio();
+            var apiKey = "LZFzflDoYZoDme1NO9ijENkROxA1XNuc9ciL9CtPRHmPbEQoX2ULJ2zGmMIq";
+            /*var apiKey = "cdI9D7Fv8ZV9KtjW5qh8k3aAcZTPMjOdWQv5dEzvzVi3n4w1UckF6NN1VH8c";*/
+            
 
-    // Función para iniciar la grabación
+            var apiUrl = "https://stablediffusionapi.com/api/v3/text2img";
+            var params = {
+                key: apiKey,
+                prompt: texto,
+                negative_prompt: null,
+                width: "400",
+                height: "400",
+                samples: "3",
+                num_outputs: 3,
+                multi_lingual: "yes",
+            };
+
+            fetch(apiUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(params),
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (data.status === "processing") {
+                  // Iniciar la actualización de la barra de progreso
+                  actualizarBarraProgreso(data.eta);
+          
+                  // Esperar hasta que la API haya completado el procesamiento
+                  setTimeout(function () {
+                    fetch(data.fetch_result, { method: 'POST' })
+                      .then(response => response.json())
+                      .then(resultData => {
+                        if (resultData && resultData.status === "success" && resultData.output && resultData.output.length > 0) {
+                          // Detener la actualización de la barra de progreso
+                          detenerBarraProgreso();
+          
+                          // Ocultar el popup después de que la API haya respondido
+                          popup.style.display = 'none';
+          
+                          imageUrls = resultData.output;
+                          mostrarPagina();
+                        } else {
+                          console.error('Respuesta de la API no tiene la propiedad "output" o "fetch_result":', data);
+                          mostrarResultados([]);
+                        }
+                      })
+                      .catch(handleError);
+                  }, data.eta * 1000);
+                } else if (data.status === "success" && data.output && data.output.length > 0) {
+                  // Detener la actualización de la barra de progreso
+                  detenerBarraProgreso();
+          
+                  // Ocultar el popup después de que la API haya respondido
+                  popup.style.display = 'none';
+          
+                  imageUrls = data.output;
+                  mostrarPagina();
+                } else {
+                  console.error('Respuesta de la API no tiene la propiedad "output" o "fetch_result":', data);
+                  mostrarResultados([]);
+                }
+              })
+              .catch(handleError);
+          }
+
+          function actualizarBarraProgreso(eta) {
+            var progressBar = document.getElementById('progress');
+            var startTime = Date.now();
+            var duration = eta * 1000; // Convertir el tiempo estimado a milisegundos
+          
+            function updateProgress() {
+              var currentTime = Date.now();
+              var elapsedTime = currentTime - startTime;
+              var progress = (elapsedTime / duration) * 100;
+          
+              if (progress <= 100) {
+                progressBar.style.width = progress + '%';
+                requestAnimationFrame(updateProgress);
+              }
+            }
+          
+            updateProgress();
+          }
+      
+      function detenerBarraProgreso() {
+        var progressBar = document.getElementById('progress');
+        progressBar.style.width = '100%';
+      }
+      
+      function handleError(error) {
+        console.error('Error:', error);
+        var resultadoDiv = document.getElementById('resultado');
+        resultadoDiv.innerHTML = '<p style="color: red;">Error al procesar la solicitud. Por favor, inténtelo de nuevo más tarde.</p>';
+      }
+        
+/*GRABAR AUDIO*/
+
+let mediaRecorder;
+let audioChunks = [];
+
     function startRecording() {
-        audioChunks = [];
-        const mediaConstraints = { audio: true };
-
-        navigator.mediaDevices.getUserMedia(mediaConstraints)
-            .then(function (stream) {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then((stream) => {
                 mediaRecorder = new MediaRecorder(stream);
 
-                mediaRecorder.ondataavailable = function (event) {
+                mediaRecorder.ondataavailable = (event) => {
                     if (event.data.size > 0) {
                         audioChunks.push(event.data);
                     }
                 };
 
-                mediaRecorder.onstop = function () {
+                mediaRecorder.onstop = () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                     const audioUrl = URL.createObjectURL(audioBlob);
-
-                    // Establecer la fuente del elemento de audio
-                    audioElement.src = audioUrl;
-
-                    console.log('Grabación completada:', audioUrl);
-
-                    // Aquí puedes hacer lo que quieras con el audioBlob o audioUrl
+                    document.getElementById('audioPlayer').src = audioUrl;
+                    document.getElementById('playRecord').disabled = false;
+                    document.getElementById('volverGrabar').disabled = false;
                 };
 
                 mediaRecorder.start();
+                document.getElementById('startRecord').disabled = true;
+                document.getElementById('pauseRecord').disabled = false;
+                document.getElementById('stopRecord').disabled = false;
             })
-            .catch(function (error) {
-                console.log('Error al obtener permisos de audio:', error);
-            });
+            .catch((error) => console.error('Error al acceder al micrófono:', error));
     }
 
-    // Función para detener la grabación
+    function pauseRecording() {
+        mediaRecorder.pause();
+        document.getElementById('pauseRecord').disabled = true;
+        document.getElementById('startRecord').disabled = false;
+        document.getElementById('stopRecord').disabled = false;
+    }
+
     function stopRecording() {
-        if (mediaRecorder.state === 'recording') {
-            mediaRecorder.stop();
-        }
+        mediaRecorder.stop();
+        document.getElementById('stopRecord').disabled = true;
+        document.getElementById('pauseRecord').disabled = true;
+        document.getElementById('startRecord').disabled = false;
+        document.getElementById('volverGrabar').disabled = false;
     }
 
-    // Maneja el evento de clic en los botones de audio
-    botonesAudio.forEach((boton) => {
-        boton.addEventListener('click', () => {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                // Detener la grabación si ya está en curso
-                stopRecording();
-            } else {
-                // Iniciar la grabación si no está en curso
-                startRecording();
-            }
-        });
-    });
+    function playAudio() {
+        document.getElementById('audioPlayer').play();
+    }
 
-    // Reproducir el audio grabado
-    document.getElementById('reproducirAudio').addEventListener('click', () => {
-        if (audioElement.src) {
-            audioElement.play();
-        }
-    });
-});
+    function cerrarModal() {
+      console.log('Cerrando el modal');
+      document.getElementById('miModal').style.display = 'none';
+  }
+
+    function guardarAudio() {
+      // Lógica para guardar el audio en el localStorage
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      // Guardar en el localStorage
+      localStorage.setItem('audioURL', audioUrl);
+
+      // Muestra el popup después de guardar el audio
+      mostrarPopupVoz();display.bl
+      
+  }
+
+  /*  function guardarAudio() {
+        // Lógica para guardar el audio
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+        // Ejemplo de cómo podrías manejar el guardado del audio (puedes ajustar esto según tus necesidades)
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style = 'display: none';
+        const url = URL.createObjectURL(audioBlob);
+        a.href = url;
+        a.download = 'grabacion.wav';
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        // Muestra el popup después de guardar el audio
+        mostrarPopupVoz();
+    }*/
+
+    function volverAGrabar() {
+        // Lógica para volver a grabar
+        audioChunks = [];
+        document.getElementById('audioPlayer').src = "";
+        document.getElementById('playRecord').disabled = true;
+        document.getElementById('volverGrabar').disabled = true;
+    }
+
+    // Funciones relacionadas con el PopupVoz
+    function mostrarPopupVoz() {
+      // Obtener el audioURL del localStorage
+      const audioUrl = localStorage.getItem('audioURL');
+
+  
+      // Configurar el reproductor de audio en el popup con el audio almacenado
+      const audioPlayerPopup = document.getElementById('audioPlayerPopup');
+      audioPlayerPopup.src = audioUrl;
+  }
+    
 

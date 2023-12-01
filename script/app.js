@@ -1,16 +1,13 @@
-  document.addEventListener('DOMContentLoaded', function() {
-    cerrarModal();
-    
-  });
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('guardarAudio').addEventListener('click', guardarAudio);
+  cerrarModal();
+});
  
   var generatedImagesContainer = document.getElementById('resultado')
   generatedImagesContainer.style.display = "none"
 
   var generatedPaginator = document.getElementById('pagination')
   generatedPaginator.style.display = "none"
-
-  var generatedpopup = document.getElementById("popupVoz")
-  generatedpopup.style.display = "none"
 
  // Función para abrir el modal
  function abrirModal() {
@@ -30,6 +27,19 @@
     }
   }
 
+  
+ // Función para abrir el modalVoz
+ function abrirModalVoz() {
+  console.log('Abriendo modal');
+  var modal = document.getElementById('miModalVoz');
+    modal.style.display = 'flex';
+}
+
+function cerrarModalVoz() {
+  console.log('Cerrando modal');
+  var modal = document.getElementById('miModalVoz');
+    modal.style.display = 'none';
+}
 
 /* Cuando hago CLICK .button, .nav TOGGLE 'activo' */
 const button = document.querySelector('.button')
@@ -208,105 +218,77 @@ var imageUrls = [];
 let mediaRecorder;
 let audioChunks = [];
 
-    function startRecording() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then((stream) => {
-                mediaRecorder = new MediaRecorder(stream);
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+            mediaRecorder = new MediaRecorder(stream);
 
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                };
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
 
-                mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    document.getElementById('audioPlayer').src = audioUrl;
-                    document.getElementById('playRecord').disabled = false;
-                    document.getElementById('volverGrabar').disabled = false;
-                };
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                document.getElementById('audioPlayer').src = audioUrl;
+                document.getElementById('playRecord').disabled = false;
+                document.getElementById('volverGrabar').disabled = false;
+            };
 
-                mediaRecorder.start();
-                document.getElementById('startRecord').disabled = true;
-                document.getElementById('pauseRecord').disabled = false;
-                document.getElementById('stopRecord').disabled = false;
-            })
-            .catch((error) => console.error('Error al acceder al micrófono:', error));
-    }
+            mediaRecorder.start();
+            document.getElementById('startRecord').disabled = true;
+            document.getElementById('pauseRecord').disabled = false;
+            document.getElementById('stopRecord').disabled = false;
+        })
+        .catch((error) => console.error('Error al acceder al micrófono:', error));
+}
 
-    function pauseRecording() {
-        mediaRecorder.pause();
-        document.getElementById('pauseRecord').disabled = true;
-        document.getElementById('startRecord').disabled = false;
-        document.getElementById('stopRecord').disabled = false;
-    }
+function pauseRecording() {
+    mediaRecorder.pause();
+    document.getElementById('pauseRecord').disabled = true;
+    document.getElementById('startRecord').disabled = false;
+    document.getElementById('stopRecord').disabled = false;
+}
 
-    function stopRecording() {
-        mediaRecorder.stop();
-        document.getElementById('stopRecord').disabled = true;
-        document.getElementById('pauseRecord').disabled = true;
-        document.getElementById('startRecord').disabled = false;
-        document.getElementById('volverGrabar').disabled = false;
-    }
+function stopRecording() {
+    mediaRecorder.stop();
+    document.getElementById('stopRecord').disabled = true;
+    document.getElementById('pauseRecord').disabled = true;
+    document.getElementById('startRecord').disabled = false;
+    document.getElementById('volverGrabar').disabled = false;
+}
 
-    function playAudio() {
-        document.getElementById('audioPlayer').play();
-    }
+function playAudio() {
+    document.getElementById('audioPlayer').play();
+}
 
-    function cerrarModal() {
-      console.log('Cerrando el modal');
-      document.getElementById('miModal').style.display = 'none';
-  }
+function guardarAudio() {
+  // Lógica para guardar el audio en el localStorage
+  const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+  const audioUrl = URL.createObjectURL(audioBlob);
 
-    function guardarAudio() {
-      // Lógica para guardar el audio en el localStorage
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      const audioUrl = URL.createObjectURL(audioBlob);
 
-      // Guardar en el localStorage
-      localStorage.setItem('audioURL', audioUrl);
+  cerrarModal();  // Cerrar el modal principal
+  // Guardar en el localStorage
+  localStorage.setItem('audioURL', audioUrl);
 
-      // Muestra el popup después de guardar el audio
-      mostrarPopupVoz();display.bl
-      
-  }
 
-  /*  function guardarAudio() {
-        // Lógica para guardar el audio
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
-        // Ejemplo de cómo podrías manejar el guardado del audio (puedes ajustar esto según tus necesidades)
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.style = 'display: none';
-        const url = URL.createObjectURL(audioBlob);
-        a.href = url;
-        a.download = 'grabacion.wav';
-        a.click();
-        window.URL.revokeObjectURL(url);
-
-        // Muestra el popup después de guardar el audio
-        mostrarPopupVoz();
-    }*/
-
-    function volverAGrabar() {
-        // Lógica para volver a grabar
-        audioChunks = [];
-        document.getElementById('audioPlayer').src = "";
-        document.getElementById('playRecord').disabled = true;
-        document.getElementById('volverGrabar').disabled = true;
-    }
-
-    // Funciones relacionadas con el PopupVoz
-    function mostrarPopupVoz() {
-      // Obtener el audioURL del localStorage
-      const audioUrl = localStorage.getItem('audioURL');
-
+  // Esperar un breve intervalo antes de cerrar el modal de voz y mostrar el popup
+  setTimeout(function () {
+     abrirModalVoz();   // Mostrar el popup de ¡Voz agregada con éxito!
+  }, 200); // Puedes ajustar este valor si es necesario
   
-      // Configurar el reproductor de audio en el popup con el audio almacenado
-      const audioPlayerPopup = document.getElementById('audioPlayerPopup');
-      audioPlayerPopup.src = audioUrl;
-  }
+}
+
+function volverAGrabar() {
+    // Lógica para volver a grabar
+    audioChunks = [];
+    document.getElementById('audioPlayer').src = "";
+    document.getElementById('playRecord').disabled = true;
+    document.getElementById('volverGrabar').disabled = true;
+}
     
 

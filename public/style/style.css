@@ -156,7 +156,7 @@
   }
 
   .menu{
-    background-color: #FAF9F9;
+    background-color: #D9D9D9;
   }
 
   .titulo{
@@ -214,9 +214,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 4px;
-    background: var(--Color, #FFF);
+    background: var(--Color, #FFFFFF);
     box-shadow: 0px 4px 4px 0px rgba(204, 0, 255, 0.25);
-    width: 30%;
+    width: 40%;
     margin-left: 10px;
 }
  
@@ -302,8 +302,8 @@ button#generate-btn {
   }
 
   .texto{
-    border-radius: 4px;
-    background: #FFF;
+    border-radius: 5px;
+    background: var(--Color, #FFF);
   }
 
   .voz{
@@ -651,14 +651,11 @@ audio#audioPlayer {
       display: none;
     }
 
-    .barraProgreso {
-      padding: 1em; 
-    }
   
-    img.imagenBarra {
+    img.imagenBarraP {
       padding: 0.5%;
       width: 100%;
-      height: 6%;
+      height: 5%;
   }
     
     .contenido {
@@ -686,11 +683,13 @@ audio#audioPlayer {
     .imagenApi {
         display: flex;
         flex-direction: row;
-        width: 98%;
+        width: 100%;
         height: 100%;
         box-shadow: none;
         align-content: center;
         flex-wrap: wrap;
+        margin: 0 0 20 0;
+        
     }
    
 

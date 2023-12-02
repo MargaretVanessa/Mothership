@@ -165,12 +165,11 @@
     line-height: 38px;
     letter-spacing: 0em;
     text-align: center;
-    margin-bottom: 5px;
     font-size: 24px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: bold;
     line-height: normal;
-    margin: 0 0 10 0;
+    padding: 10 0 10 0;
     }
 
   .contenido{
@@ -219,11 +218,14 @@
     width: 40%;
     margin-left: 10px;
 }
+
+label#titulo-imagen {
+  padding-bottom: 19px;
+}
  
 .resultado-imagenes {
-  margin-top: 10;
-  width: 325px;
-  height: 95%;
+  width: 305px;
+  height: 88%;
   border-radius: 4px;
 }
 
@@ -298,7 +300,7 @@ button#generate-btn {
     padding: 5px; 
     border-radius: 4px;
     background: #FFF;
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .texto{
@@ -312,16 +314,14 @@ button#generate-btn {
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    margin: 5px 287px 5px 410px;
   }
 
   .acciones {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    margin-left: 420px;
-    margin-right: 315px;
-    padding-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-content: center;
+      padding: 14px 680px 14px 157px;
   }
   
   .botones {
@@ -408,8 +408,8 @@ p.mensaje {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #FAF9F9;
     padding: 1em;
+    background: #FAF9F9;
   }
 
   .footer {
@@ -428,8 +428,9 @@ p.mensaje {
 /*Estilo POPUP*/
 
 .menuGrabar{
-  width: 649px;
-  height: 338px;
+  margin: 40 0 0 410px;
+  width: 510px;
+  height: 320px;
   flex-shrink: 0;
   border-radius: 20px;
   background: var(--Fondo-pginas, #F2F2F2);
@@ -564,8 +565,7 @@ button#stopRecord {
   gap: 12px;
   flex-shrink: 0;
   border-radius: 4px;
-  border: 2px solid #09244B;
-  background: #FFFFF3;
+  background: #5D00B9;
 }
 
 img.stopRecording {
@@ -675,9 +675,11 @@ audio#audioPlayer {
     }
 
     textarea#texto {
-      width: 100%;
-      height: 212px; 
-      max-height: 100%;
+    width: 100%;
+    height: 375px;
+    max-height: 100%;
+    font-weight: bold;
+    font-size: 17.5px;
     }
 
     .imagenApi {
@@ -765,6 +767,7 @@ audio#audioPlayer {
     }
 
     .menuGrabar {
+    margin: -83 0 0 0;
     width: 345px;
     height: 270px;
     flex-shrink: 0;
@@ -900,15 +903,16 @@ a#icono {
   height: 30px;
   color: #10C200;
 }
+
 .resultado-imagenes {
     margin-top: 0;
-    width: 319px;
-    height: 80%;
-    border-radius: 4px;
+    width: 378px;
+    height: 88%;
+      border-radius: 4px;
 }
 
 #popup {
-  top: 47%;
+  top: 40%;
   left: 49%;
   padding: 5px;
   position: absolute;

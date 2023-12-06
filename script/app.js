@@ -111,7 +111,7 @@ var imageUrls = [];
             var texto = document.getElementById('texto').value;
            
 
-            /*var apiKey = "LZFzflDoYZoDme1NO9ijENkROxA1XNuc9ciL9CtPRHmPbEQoX2ULJ2zGmMIq";*/
+            var apiKey = "LZFzflDoYZoDme1NO9ijENkROxA1XNuc9ciL9CtPRHmPbEQoX2ULJ2zGmMIq";
             /*var apiKey = "cdI9D7Fv8ZV9KtjW5qh8k3aAcZTPMjOdWQv5dEzvzVi3n4w1UckF6NN1VH8c";*/
             
 

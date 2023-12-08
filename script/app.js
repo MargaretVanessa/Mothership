@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('guardarAudio').addEventListener('click', guardarAudio);
+  document.getElementById('guardarAudio').removeEventListener('click', guardarAudio);
   cerrarModal();
+  console.log("Evento de clic en guardarAudio registrado.");
+
+   // Verificar si hay imágenes y audio almacenados en el localStorage
+   if (hayImagenesAlmacenadas() && hayAudioAlmacenado()) {
+    mostrarBotonContinuar();
+  }
 });
  
   var generatedImagesContainer = document.getElementById('resultado')
@@ -52,16 +59,35 @@ button.addEventListener('click',()=>{
 
 /*IMAGEN API*/
 
-var imageUrls = [];
+        var imageUrls = [];
         var currentPageIndex = 0;
         var imagesPerPage = 1; // Cambiado a 1 para mostrar solo una imagen por página
+
+        // Intenta cargar las imágenes desde el localStorage al cargar la página
+        cargarImagenesDesdeLocalStorage();
 
         function mostrarPagina() {
             var start = currentPageIndex * imagesPerPage;
             var end = start + imagesPerPage;
             var paginatedUrls = imageUrls.slice(start, end);
             mostrarResultados(paginatedUrls);
+
+            // Almacena las URLs de las imágenes en el localStorage
+            guardarImagenesEnLocalStorage(imageUrls);
         }
+
+        function guardarImagenesEnLocalStorage(urls) {
+          var imagenesJson = JSON.stringify(urls);
+          localStorage.setItem('imagenes', imagenesJson);
+      }
+      
+      function cargarImagenesDesdeLocalStorage() {
+          var imagenesJson = localStorage.getItem('imagenes');
+          if (imagenesJson) {
+              imageUrls = JSON.parse(imagenesJson);
+              mostrarPagina();
+          }
+      }
 
         function generarPaginacion() {
         var totalPages = Math.ceil(imageUrls.length / imagesPerPage);
@@ -111,8 +137,8 @@ var imageUrls = [];
             var texto = document.getElementById('texto').value;
            
 
-            var apiKey = "LZFzflDoYZoDme1NO9ijENkROxA1XNuc9ciL9CtPRHmPbEQoX2ULJ2zGmMIq";
-            /*var apiKey = "cdI9D7Fv8ZV9KtjW5qh8k3aAcZTPMjOdWQv5dEzvzVi3n4w1UckF6NN1VH8c";*/
+            /*var apiKey = "81sKF79HmiSaQMvYhy49a9jW1x5KXeaF1gRlesXoxz8Y5Nh4rAi6BMVhPMWF";
+            var apiKey = "cdI9D7Fv8ZV9KtjW5qh8k3aAcZTPMjOdWQv5dEzvzVi3n4w1UckF6NN1VH8c";*/
             
 
             var apiUrl = "https://stablediffusionapi.com/api/v3/text2img";
@@ -217,10 +243,13 @@ var imageUrls = [];
 
 let mediaRecorder;
 let audioChunks = [];
+let grabaciones = [];
+let audioGrabado = false;
 
 function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
         .then((stream) => {
+            audioGrabado = true;
             mediaRecorder = new MediaRecorder(stream);
 
             mediaRecorder.ondataavailable = (event) => {
@@ -230,7 +259,10 @@ function startRecording() {
             };
 
             mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                grabaciones.push([...audioChunks]); // Almacenar una copia de los audioChunks
+                audioChunks = [];
+
+                const audioBlob = new Blob(grabaciones.flat(), { type: 'audio/wav' });
                 const audioUrl = URL.createObjectURL(audioBlob);
                 document.getElementById('audioPlayer').src = audioUrl;
                 document.getElementById('playRecord').disabled = false;
@@ -246,18 +278,31 @@ function startRecording() {
 }
 
 function pauseRecording() {
-    mediaRecorder.pause();
-    document.getElementById('pauseRecord').disabled = true;
-    document.getElementById('startRecord').disabled = false;
-    document.getElementById('stopRecord').disabled = false;
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        document.getElementById('pauseRecord').disabled = true;
+        document.getElementById('startRecord').disabled = false;
+        document.getElementById('stopRecord').disabled = false;
+    }
 }
 
 function stopRecording() {
-    mediaRecorder.stop();
-    document.getElementById('stopRecord').disabled = true;
-    document.getElementById('pauseRecord').disabled = true;
-    document.getElementById('startRecord').disabled = false;
-    document.getElementById('volverGrabar').disabled = false;
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+  }
+
+  // Si hay grabaciones, reproducir la última
+  if (grabaciones.length > 0) {
+      const audioBlob = new Blob(grabaciones.flat(), { type: 'audio/wav' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      document.getElementById('audioPlayer').src = audioUrl;
+      document.getElementById('playRecord').disabled = false;
+  }
+
+  document.getElementById('stopRecord').disabled = true;
+  document.getElementById('pauseRecord').disabled = true;
+  document.getElementById('startRecord').disabled = false;
+  document.getElementById('volverGrabar').disabled = false;
 }
 
 function playAudio() {
@@ -265,30 +310,64 @@ function playAudio() {
 }
 
 function guardarAudio() {
-  // Lógica para guardar el audio en el localStorage
-  const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-  const audioUrl = URL.createObjectURL(audioBlob);
+    console.log("Guardando audio...");
+    if (audioGrabado) {
+        const audioBlob = new Blob(grabaciones.flat(), { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
 
+        cerrarModal();
+        localStorage.setItem('audioURL', audioUrl);
 
-  cerrarModal();  // Cerrar el modal principal
-  // Guardar en el localStorage
-  localStorage.setItem('audioURL', audioUrl);
+        reiniciarMenuGrabacion();
+        audioGrabado = false;
 
-
-
-  // Esperar un breve intervalo antes de cerrar el modal de voz y mostrar el popup
-  setTimeout(function () {
-     abrirModalVoz();   // Mostrar el popup de ¡Voz agregada con éxito!
-  }, 200); // Puedes ajustar este valor si es necesario
-  
+        setTimeout(function () {
+            abrirModalVoz();
+        }, 200);
+    } else {
+        alert("Para guardar el audio, primero debes grabar.");
+    }
 }
 
 function volverAGrabar() {
-    // Lógica para volver a grabar
-    audioChunks = [];
+  // Detener la grabación actual si está en curso
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
+  }
+
+  // Limpiar las grabaciones anteriores y comenzar una nueva sesión
+  grabaciones = [];
+  audioChunks = [];
+  document.getElementById('audioPlayer').src = "";
+  document.getElementById('playRecord').disabled = true;
+  document.getElementById('volverGrabar').disabled = true;
+
+  // Iniciar una nueva sesión de grabación
+  startRecording();
+}
+
+function reiniciarMenuGrabacion() {
+    grabaciones = []; // Restablecer las sesiones
     document.getElementById('audioPlayer').src = "";
     document.getElementById('playRecord').disabled = true;
     document.getElementById('volverGrabar').disabled = true;
+    console.log('Menú de grabación restablecido');
 }
-    
+
+function mostrarBotonContinuar() {
+  var botonContinuar = document.getElementById('botonContinuar');
+  if (botonContinuar) {
+      botonContinuar.style.display = 'block';
+  }
+}
+
+function hayImagenesAlmacenadas() {
+  var imagenesJson = localStorage.getItem('imagenes');
+  return imagenesJson !== null;
+}
+
+function hayAudioAlmacenado() {
+  var audioUrl = localStorage.getItem('audioURL');
+  return audioUrl !== null;
+}
 

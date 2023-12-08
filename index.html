@@ -23,8 +23,6 @@
     
         <nav class="nav">
             <ul class="ul">
-                <!--li class="li"><a href="#" class="a">Inicio</a></li>
-                <li class="li"><a href="#" class="a">Contacto</a></li-->
                 <li class="li"><a href="#" class="sesion">Cerrar sesión</a></li>
             </ul>
         </nav>
@@ -47,7 +45,7 @@
                 <label for="generate-btn" id="titulo-imagen" class="generarImg">Estamos listos para que puedas ver tu historia</label>
                 <button class="boton" id="generate-btn" onclick="generarImagenes()">Generar imágenes</button>
             
-                <div id="resultado" class="resultado-imagenes">
+                <div id="resultado" class="resultadoImagenes">
                   
                 </div>
 
@@ -73,7 +71,6 @@
             <div class="botones">
                 <a href="#" class="botonaudio botonaudio1" onclick="abrirModal()"><img src="./public/images/mic.svg" id="botonAudio1" alt="grabaHistoria"/><p id="botonAudiotexto">Grabar historia</p></a>
             </div>
-            <!--button id="continuar" type="submit">Continuar</button-->
         </div>
 
         <div id="miModal">
@@ -123,6 +120,11 @@
             </div>
         </div>
     
+        <div class="botonContinuar">
+            <button id="botonContinuar" style="display: none">Continuar</button>
+        </div>
+
+       
         
     </div>
 
